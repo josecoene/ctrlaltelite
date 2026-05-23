@@ -12,3 +12,5 @@ TEMPERATURA_URL = os.getenv(
 ENERGIA_URL = os.getenv(
     "ENERGIA_URL"
 )
+
+API_KEY = os.getenv("API_KEY")
