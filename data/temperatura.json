@@ -1,0 +1,53 @@
+{
+  "sensor": "estoque_temperatura",
+  "group": "camara_estoque",
+  "type": "temperatura",
+  "label": "Temperatura Interna da Câmara",
+  "demo_mode": false,
+  "fields": [
+    "temperatura"
+  ],
+  "count": 10,
+  "points": [
+    {
+      "time": "2026-05-23T15:56:30.099885Z",
+      "temperatura": -5.7
+    },
+    {
+      "time": "2026-05-23T15:57:25.909785Z",
+      "temperatura": -5.8
+    },
+    {
+      "time": "2026-05-23T15:58:19.313054Z",
+      "temperatura": -5.9
+    },
+    {
+      "time": "2026-05-23T16:03:30.777527Z",
+      "temperatura": -5.5
+    },
+    {
+      "time": "2026-05-23T16:04:36.290423Z",
+      "temperatura": -5.7
+    },
+    {
+      "time": "2026-05-23T16:06:02.627445Z",
+      "temperatura": -5.9
+    },
+    {
+      "time": "2026-05-23T16:09:13.346033Z",
+      "temperatura": -5.8
+    },
+    {
+      "time": "2026-05-23T16:10:25.452710Z",
+      "temperatura": -5.7
+    },
+    {
+      "time": "2026-05-23T16:12:48.472300Z",
+      "temperatura": -5.7
+    },
+    {
+      "time": "2026-05-23T16:17:06.997084Z",
+      "temperatura": -5.7
+    }
+  ]
+}
