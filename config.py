@@ -16,5 +16,3 @@ TEMPERATURA_URL = os.getenv(
 MOTOR2_URL = os.getenv(
     "MOTOR2_URL"
 )
-
-print("API_KEY:", API_KEY)
