@@ -10,12 +10,6 @@ except ImportError:
 from detector import detect_door_state
 
 
-# ---------------------------------------------------------------------------
-# Cálculo de potência ativa (W)
-# fator_potencia negativo nos dados reais indica carga indutiva (comportamento
-# normal em motores). Usamos abs() para obter a potência ativa consumida.
-# ---------------------------------------------------------------------------
-
 def calculate_power(point):
     return (
         point["tensao_fase_a"] * point["corrente_fase_a"] * abs(point["fator_potencia_a"])
@@ -23,12 +17,6 @@ def calculate_power(point):
         + point["tensao_fase_c"] * point["corrente_fase_c"] * abs(point["fator_potencia_c"])
     )
 
-
-# ---------------------------------------------------------------------------
-# Autoencoder leve com PyTorch
-# Arquitetura: encoder 1→4→2, decoder 2→4→1
-# Treina online com os dados da janela atual (sem dataset externo).
-# ---------------------------------------------------------------------------
 
 class _TinyAutoencoder(nn.Module):
     def __init__(self):
@@ -49,15 +37,11 @@ class _TinyAutoencoder(nn.Module):
 
 
 def _train_autoencoder(data: list[float], epochs: int = 80, lr: float = 1e-2):
-    """
-    Treina o autoencoder nos dados fornecidos e devolve o modelo pronto.
-    Normaliza internamente para estabilizar o treinamento.
-    """
     arr = np.array(data, dtype=np.float32)
     mean, std = arr.mean(), arr.std() + 1e-8
     norm = (arr - mean) / std
 
-    x = torch.tensor(norm).unsqueeze(1)           # shape (N, 1)
+    x = torch.tensor(norm).unsqueeze(1)
 
     model = _TinyAutoencoder()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
@@ -75,12 +59,6 @@ def _train_autoencoder(data: list[float], epochs: int = 80, lr: float = 1e-2):
 
 
 def autoencoder_reconstruction_errors(data: list[float]) -> list[float]:
-    """
-    Usa o autoencoder PyTorch se disponível; caso contrário, cai no proxy de
-    média móvel (sem dependência externa).
-
-    Retorna lista de erros de reconstrução alinhada com `data`.
-    """
     if TORCH_AVAILABLE and len(data) >= 10:
         model, mean, std = _train_autoencoder(data)
         arr = np.array(data, dtype=np.float32)
@@ -96,10 +74,6 @@ def autoencoder_reconstruction_errors(data: list[float]) -> list[float]:
 
 
 def _moving_average_errors(data: list[float], window: int = 5) -> list[float]:
-    """
-    Proxy leve: usa média móvel como reconstrução.
-    Mantido como fallback quando PyTorch não está disponível.
-    """
     errors = []
     for i in range(len(data)):
         start = max(0, i - window)
@@ -107,10 +81,6 @@ def _moving_average_errors(data: list[float], window: int = 5) -> list[float]:
         errors.append(abs(data[i] - recon))
     return errors
 
-
-# ---------------------------------------------------------------------------
-# Análise principal do sistema
-# ---------------------------------------------------------------------------
 
 def analyze_system(porta_data, temperatura_data, motor2_data):
 
@@ -121,16 +91,11 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
     if not motor2_data["points"]:
         return {"error": "Sem dados do motor 2"}
 
-    # --- Detectar estado da porta ---
     door_states = detect_door_state(porta_data["points"])
 
-    # --- Extrair séries ---
     temperaturas = [p["temperatura"] for p in temperatura_data["points"]]
     energia = [calculate_power(p) for p in motor2_data["points"]]
 
-    # NOTA: os três sensores têm timestamps independentes; truncamos pelo menor
-    # tamanho para manter índices alinhados. Em produção o ideal seria fazer
-    # um join por timestamp mais próximo.
     min_size = min(len(door_states), len(temperaturas), len(energia))
 
     energia_total = energia[:min_size]
@@ -140,7 +105,6 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
     temp_media = np.mean(temperaturas)
     energia_media = np.mean(energia_total)
 
-    # --- Autoencoder (PyTorch leve ou fallback) ---
     recon_errors = autoencoder_reconstruction_errors(energia_total)
     threshold = np.mean(recon_errors) + 2 * np.std(recon_errors)
 
@@ -161,6 +125,8 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
 
         if recon_errors[i] > threshold:
             anomaly_count += 1
+            score += 10
+            problemas.append("Anomalia energética detectada")
 
         if temperaturas[i] > temp_media + 1:
             score += 5
@@ -168,16 +134,13 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
         if energia_total[i] > energia_media * 1.2:
             score += 5
 
-        if recon_errors[i] > threshold:
-            score += 10
-            problemas.append("Anomalia energética detectada")
-
     anomaly_ratio = anomaly_count / max(1, min_size)
 
-    if anomaly_ratio < 0.2:
+    # status unificado com o score — anomaly_ratio vira métrica auxiliar
+    if score < 100:
         status = "NORMAL"
         diagnostic = "Sistema estável."
-    elif anomaly_ratio < 0.5:
+    elif score < 300:
         status = "ATENCAO"
         diagnostic = "Variações moderadas detectadas."
     else:
