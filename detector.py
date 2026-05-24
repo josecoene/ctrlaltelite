@@ -1,4 +1,7 @@
-def detect_door_state(points, threshold=119):
+def detect_door_state(
+    points,
+    threshold=119
+):
 
     result = []
 
@@ -9,11 +12,15 @@ def detect_door_state(points, threshold=119):
         state = "FECHADA"
 
         if voltage < threshold:
+
             state = "ABERTA"
 
         result.append({
+
             "time": p["time"],
+
             "voltage": voltage,
+
             "door_state": state
         })
 

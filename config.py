@@ -3,14 +3,18 @@ import os
 
 load_dotenv()
 
-PORTA_URL = os.getenv("PORTA_URL")
+API_KEY = os.getenv("API_KEY")
+
+PORTA_URL = os.getenv(
+    "PORTA_URL"
+)
 
 TEMPERATURA_URL = os.getenv(
     "TEMPERATURA_URL"
 )
 
-ENERGIA_URL = os.getenv(
-    "ENERGIA_URL"
+MOTOR2_URL = os.getenv(
+    "MOTOR2_URL"
 )
 
-API_KEY = os.getenv("API_KEY")
+print("API_KEY:", API_KEY)

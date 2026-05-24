@@ -1,5 +1,8 @@
 fastapi
 uvicorn
+requests
 numpy
 pandas
-requests
+python-dotenv
+torch
+matplotlib
