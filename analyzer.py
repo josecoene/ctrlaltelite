@@ -108,6 +108,13 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
     recon_errors = autoencoder_reconstruction_errors(energia_total)
     threshold = np.mean(recon_errors) + 2 * np.std(recon_errors)
 
+    # --- Autoencoder ---
+    recon_errors = autoencoder_reconstruction_errors(energia_total)
+    threshold = np.mean(recon_errors) + 2 * np.std(recon_errors)
+
+    # --- Confiabilidade ---
+    confianca = calculate_confidence(energia_total, recon_errors, threshold)
+
     # --- Pontuação e detecção de problemas ---
     score = 0
     problemas = []
@@ -136,6 +143,83 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
 
     anomaly_ratio = anomaly_count / max(1, min_size)
 
+    def calculate_confidence(
+        data: list[float],
+        recon_errors: list[float],
+        threshold: float,
+        min_points: int = 10,
+    ) -> dict:
+        """
+        Calcula a confiabilidade do processo de detecção em quatro dimensões:
+
+        1. volume      — pontos suficientes para o autoencoder generalizar
+        2. estabilidade — quão estável é a série (coef. de variação)
+        3. separabilidade — o threshold consegue separar normal de anômalo com clareza
+        4. cobertura   — proporção de pontos bem reconstruídos (abaixo do threshold)
+
+        Retorna um score de 0 a 100 e um label: ALTA, MEDIA ou BAIXA.
+        """
+
+        n = len(data)
+        arr = np.array(data, dtype=np.float32)
+        errors = np.array(recon_errors, dtype=np.float32)
+
+        # 1. volume: menos de 10 pontos é insuficiente, 50+ é ideal
+        if n < min_points:
+            volume_score = 0.0
+        else:
+            volume_score = min(1.0, (n - min_points) / (50 - min_points))
+
+        # 2. estabilidade: coeficiente de variação da série original
+        # série muito volátil = autoencoder menos confiável
+        mean = arr.mean()
+        std = arr.std()
+        cv = std / (abs(mean) + 1e-8)
+        estabilidade_score = max(0.0, 1.0 - cv)
+
+        # 3. separabilidade: distância entre a média dos erros normais
+        # e a média dos erros anômalos, normalizada pelo threshold
+        # quanto maior a separação, mais claro é o sinal
+        normal_errors = errors[errors <= threshold]
+        anomaly_errors = errors[errors > threshold]
+
+        if len(normal_errors) == 0 or len(anomaly_errors) == 0:
+            separabilidade_score = 0.5  # não dá para medir separação sem os dois grupos
+        else:
+            gap = anomaly_errors.mean() - normal_errors.mean()
+            separabilidade_score = min(1.0, gap / (threshold + 1e-8))
+
+        # 4. cobertura: proporção de pontos bem reconstruídos
+        cobertura_score = (errors <= threshold).sum() / n
+
+        # score final ponderado
+        confidence = (
+            volume_score        * 0.20 +
+            estabilidade_score  * 0.30 +
+            separabilidade_score * 0.30 +
+            cobertura_score     * 0.20
+        ) * 100
+
+        confidence = round(float(confidence), 1)
+
+        if confidence >= 70:
+            label = "ALTA"
+        elif confidence >= 40:
+            label = "MEDIA"
+        else:
+            label = "BAIXA"
+
+        return {
+            "score": confidence,
+            "label": label,
+            "detalhes": {
+                "volume":          round(volume_score * 100, 1),
+                "estabilidade":    round(estabilidade_score * 100, 1),
+                "separabilidade":  round(separabilidade_score * 100, 1),
+                "cobertura":       round(cobertura_score * 100, 1),
+            }
+        }
+
     # status unificado com o score — anomaly_ratio vira métrica auxiliar
     if score < 100:
         status = "NORMAL"
@@ -150,6 +234,7 @@ def analyze_system(porta_data, temperatura_data, motor2_data):
     return {
         "score": score,
         "status": status,
+        "confianca": confianca,
         "anomalias_detectadas": anomaly_count,
         "anomalia_ratio": round(anomaly_ratio, 4),
 
