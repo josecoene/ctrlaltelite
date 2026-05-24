@@ -4,5 +4,4 @@ requests
 numpy
 pandas
 python-dotenv
-torch
 matplotlib
