@@ -1,96 +1,196 @@
-# FrostGuard AI - Manutenção Preditiva & Eficiência Térmica (Dale Sorvetes)
+# 🧊 ColdGuardian AI
 
-Este repositório contém a solução **FrostGuard AI**, desenvolvida para o desafio de manutenção preditiva industrial da **Dale Sorvetes** durante o **Hackathon BEM Inteligência**.
+Sistema inteligente de monitoramento industrial com detecção de anomalias em tempo real baseado em sensores de temperatura, energia e estado de portas.
 
-A plataforma realiza o processamento contínuo de dados elétricos e térmicos coletados em tempo real de sensores industriais, calcula métricas de saúde operacional e riscos de perda térmica, e disponibiliza relatórios integrados via **Google Sheets** e **Looker Studio**, além de disparar alertas automáticos e instantâneos para canais de operação via **Discord**.
-
----
-
-## 🚀 Como Rodar o MVP (Passo a Passo)
-
-### 1. Pré-requisitos
-Certifique-se de ter o Python 3.8+ instalado em sua máquina.
-
-### 2. Instalação das Dependências
-Instale as bibliotecas necessárias executando o comando abaixo no terminal da pasta do projeto:
-```bash
-python -m pip install -r requirements.txt
-```
-
-### 3. Configuração do `.env`
-Renomeie o arquivo `.env.example` para `.env` e configure suas chaves:
-- `API_KEY`: Insira a chave exclusiva fornecida pelo hackathon (por padrão, o código já vem configurado com a chave pública do sandbox).
-- `DISCORD_WEBHOOK_URL`: Crie um webhook nas configurações de um canal do Discord e insira o link aqui para habilitar os alertas em tempo real.
-- `GOOGLE_SHEET_NAME`: O nome da planilha que você deseja preencher.
-
-### 4. Executando o Orquestrador com Menu Interativo (Perfeito para Apresentação)
-Rode o script principal para simular falhas e mostrar alertas na apresentação do pitch:
-```bash
-python main.py
-```
-O script iniciará no modo interativo. Você poderá escolher rodar dados normais em tempo real da fábrica ou simular anomalias (falhas elétricas ou térmicas) para demonstrar aos avaliadores no pitch.
-
-### 5. Executando o Daemon de Monitoramento Real em Tempo Fiel (Modo Produção)
-Para rodar a ferramenta em segundo plano, monitorando de forma contínua e silenciosa os dados em tempo real da fábrica (sem menus ou simulações):
-```bash
-python monitor.py
-```
-
-### 6. Executando Testes de Validação Rápida
-Para realizar um teste automatizado pontual que executa 3 cenários operacionais seguidos e valida o processador analítico:
-```bash
-python test_workflow.py
-```
+Este projeto foi desenvolvido como um MVP para hackathon, com foco em **simplicidade, explicabilidade e detecção leve de anomalias** usando estatística e um autoencoder simplificado.
 
 ---
 
-## 🛠️ Como Funciona o Core Analítico (Algoritmos e Regras)
+# 🎯 Objetivo
 
-### A. Desequilíbrio Trifásico (NEMA)
-O desequilíbrio de corrente ou tensão entre as fases ($A, B, C$) de motores e compressores é calculado de acordo com a norma NEMA:
-$$\text{Desequilíbrio (\%)} = \frac{\text{Desvio Máximo em relação à Média}}{\text{Média Trifásica}} \times 100$$
-- **Desequilíbrios > 10%** representam alta severidade, provocando fadiga precoce dos enrolamentos do motor e gerando picos de calor.
+O ColdGuardian AI monitora sistemas industriais e identifica comportamentos anômalos que podem indicar problemas operacionais.
 
-### B. Score de Saúde Operacional (0 - 100%)
-Reflete a saúde geral do compressor através de uma média ponderada de indicadores elétricos e térmicos:
-1. **Desequilíbrio de Corrente (Peso 35%)**: Penaliza de forma quadrática/linear valores acima de 5%.
-2. **Desequilíbrio de Tensão (Peso 20%)**: Penaliza desvios elétricos acima de 1%.
-3. **Flutuação de Tensão Nominal (Peso 15%)**: Mede o desvio em relação à tensão nominal da rede (220V).
-4. **Fator de Potência (Peso 15%)**: Penaliza valores abaixo do limite regulatório nacional de 0,92 (evitando tarifas e multas de energia reativa excedente).
-5. **Temperatura do Compressor (Peso 15% - se disponível)**.
+Ele analisa:
 
-### C. Previsão de Prejuízo Financeiro Operacional (R$)
-Com base no valor total do estoque da câmara fria (ex: R$ 65.000 em sorvetes), estimamos o prejuízo cumulativo em tempo real se a temperatura romper a barreira crítica de degradação térmica ($-10^\circ\text{C}$):
-$$\text{Prejuízo Previsto} = \text{Valor do Estoque} \times \text{Fator de Temperatura} \times \frac{\text{Tempo acima do limite (minutos)}}{240}$$
-- A perda total ($100\%$ do valor do estoque) é projetada para ocorrer caso a temperatura permaneça crítica por mais de **4 horas (240 minutos)**, tempo limite antes do derretimento completo e perda irreversível da textura do sorvete.
+- 🌡️ Temperatura
+- ⚡ Consumo energético
+- 🚪 Estado de portas (aberta/fechada)
+- 📊 Desvios de comportamento ao longo do tempo
+
+E transforma isso em:
+
+- Score de risco
+- Status operacional (NORMAL / ATENÇÃO / CRÍTICO)
+- Diagnóstico automático
+- Visualização gráfica
 
 ---
 
-## 📊 Arquitetura de Dados & Visualização no Looker Studio
+# 🧠 Escopo
 
-O fluxo foi desenhado para ser econômico, rápido e altamente escalável para apresentação (Pitch):
-
-```mermaid
-graph LR
-    API[Sandbox API - Bem Inteligência] -->|api_client.py| Main[main.py Orquestrador]
-    Main -->|analytics.py| Engine[Engine Analítico]
-    Engine -->|alerts.py| Discord[Discord Webhooks Alerts]
-    Engine -->|google_sheets.py| GSheets[Google Sheets Planilha]
-    GSheets -->|Conexão Nativa| Looker[Looker Studio Dashboard]
-```
-
-### Passo a Passo para conectar o Looker Studio:
-1. Acesse o [Looker Studio](https://lookerstudio.google.com/).
-2. Clique em **Criar** > **Fonte de dados**.
-3. Selecione o conector **Planilhas Google** e escolha a sua planilha `FrostGuard_Data` (compartilhada previamente com sua Conta de Serviço do Google Cloud).
-4. No Dashboard, crie:
-   - Um gráfico de linhas relacionando a data/hora (`timestamp`) com a `temp_camara`.
-   - Um cartão de score mostrando a média do `health_score`.
-   - Um gráfico de barras demonstrando o consumo e fator de potência por compressor.
-   - Um indicador com o `prejuizo_previsto` acumulado.
+✔ MVP funcional para hackathon  
+✔ Integração com APIs externas de sensores  
+✔ Processamento de dados em tempo real  
+✔ Detecção leve de anomalias (autoencoder simplificado)  
+✔ API REST com FastAPI  
+✔ Visualização de dados com gráfico PNG  
 
 ---
 
-## 👥 Equipe
-Desenvolvido para o **Hackathon BEM Inteligência / Dale Sorvetes**.
-*FrostGuard AI - A inteligência que protege a qualidade do seu sorvete e a saúde de suas máquinas.*
+# 🏗️ Arquitetura
+
+ColdGuardian AI
+│
+├── main.py → API FastAPI (endpoints)
+├── analyzer.py → lógica de análise + autoencoder leve
+├── detector.py → detecção do estado da porta
+├── api_client.py → consumo de APIs externas
+├── config.py → variáveis de ambiente (.env)
+├── visualizer.py → geração de gráficos (PNG)
+
+
+---
+
+# ⚙️ Stack utilizada
+
+- Python 3.11
+- FastAPI
+- Uvicorn
+- Requests
+- NumPy
+- Matplotlib
+- Python-dotenv
+
+---
+
+# 🚀 Instalação
+
+## 1. Criar ambiente virtual
+
+```bash
+python -m venv venv
+
+2. Ativar ambiente
+Windows
+venv\Scripts\activate
+Linux / Mac
+source venv/bin/activate
+3. Instalar dependências
+pip install -r requirements.txt
+📦 requirements.txt
+fastapi
+uvicorn
+requests
+numpy
+python-dotenv
+matplotlib
+🔐 Configuração (.env)
+
+Crie um arquivo .env na raiz do projeto:
+
+API_KEY=sua_api_key
+PORTA_URL=url_sensor_porta
+TEMPERATURA_URL=url_sensor_temperatura
+MOTOR2_URL=url_sensor_motor
+▶️ Executar o projeto
+uvicorn main:app --reload
+
+A API ficará disponível em:
+
+http://127.0.0.1:8000
+📡 Endpoints
+🟢 GET /
+
+Health check da API.
+
+{
+  "project": "ColdGuardian AI",
+  "status": "running"
+}
+📊 GET /analyze
+
+Executa análise completa dos sensores.
+
+Exemplo de resposta:
+{
+  "score": 90,
+  "status": "CRITICO",
+  "anomalias_detectadas": 70,
+  "anomalia_ratio": 0.7,
+  "temperatura_media": -6.28,
+  "energia_media_total": 9276.95,
+  "porta_aberta_count": 100,
+  "total_amostras": 100,
+  "diagnostic": "Anomalia consistente no padrão energético/térmico."
+}
+📈 GET /chart
+
+Retorna um gráfico PNG com:
+
+Temperatura
+Energia
+Erro do autoencoder
+Threshold de anomalia
+
+Abra no navegador:
+
+http://127.0.0.1:8000/chart
+📚 GET /docs
+
+Swagger automático do FastAPI:
+
+http://127.0.0.1:8000/docs
+
+Permite:
+
+Testar endpoints
+Visualizar schemas
+Executar requisições
+🤖 Autoencoder (versão leve)
+
+Este projeto utiliza um autoencoder simplificado (proxy estatístico):
+
+Como funciona:
+Reconstrução dos dados usando média móvel
+Cálculo do erro entre valor real e reconstruído
+Definição de threshold:
+threshold = média + 2 * desvio padrão
+Objetivo:
+
+Detectar padrões anômalos como:
+
+Picos de energia
+Instabilidade térmica
+Comportamento fora do padrão
+📊 Lógica de decisão
+Status	Condição
+NORMAL	baixa taxa de anomalias
+ATENÇÃO	variação moderada
+CRÍTICO	anomalias persistentes
+🔄 Fluxo do sistema
+Coleta dados dos sensores via API
+Processamento no analyzer
+Detecção de estado da porta
+Cálculo de energia e temperatura média
+Execução do autoencoder leve
+Geração de score de risco
+Classificação do status
+(Opcional) geração de gráfico /chart
+🧪 Funcionalidades
+
+✔ Integração com APIs externas
+✔ Processamento de dados em tempo real
+✔ Detecção de porta aberta/fechada
+✔ Cálculo de consumo energético
+✔ Autoencoder leve para anomalias
+✔ Score de risco dinâmico
+✔ Classificação de status
+✔ Endpoint de análise
+✔ Endpoint de gráfico
+✔ Visualização PNG
+
+🏁 Objetivo final
+
+Criar um sistema simples, explicável e funcional para:
+
+Monitoramento industrial inteligente com detecção leve de anomalias em tempo real.

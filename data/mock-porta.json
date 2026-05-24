@@ -1,0 +1,413 @@
+{
+  "sensor": "estoque_porta",
+  "group": "camara_estoque",
+  "type": "porta",
+  "label": "Abertura de Porta",
+  "demo_mode": false,
+  "fields": [
+    "abertura_porta"
+  ],
+  "count": 100,
+  "points": [
+    {
+      "time": "2026-05-23T15:05:39.267756Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:07:41.756587Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:08:50.124278Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:09:33.735475Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:10:17.965150Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:11:07.155906Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:14:19.761366Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:15:20.269261Z",
+      "abertura_porta": 121
+    },
+    {
+      "time": "2026-05-23T15:19:51.970953Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:22:36.393975Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:22:41.501746Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:24:10.823088Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:25:12.414955Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:27:02.567950Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:27:07.785465Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:28:07.622356Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:29:29.139703Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:30:23.924175Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:31:12.554117Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:33:19.395060Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:34:25.817290Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:35:14.755514Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:38:08.750814Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:40:47.757648Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:41:25.540423Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T15:50:50.686899Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T15:56:30.099885Z",
+      "abertura_porta": 118
+    },
+    {
+      "time": "2026-05-23T15:57:25.909785Z",
+      "abertura_porta": 118
+    },
+    {
+      "time": "2026-05-23T15:58:19.313054Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:03:30.777527Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:04:36.290423Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:06:02.627445Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:09:13.346033Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:10:25.452710Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:12:48.472300Z",
+      "abertura_porta": 118
+    },
+    {
+      "time": "2026-05-23T16:17:06.997084Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:20:55.302942Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:30:07.802178Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:31:02.714220Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:31:52.049768Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:36:29.123155Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:38:24.795069Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:42:14.831956Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:42:19.953301Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:43:54.467200Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:44:00.044596Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:47:19.562009Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T16:49:32.206670Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:51:16.274490Z",
+      "abertura_porta": 118
+    },
+    {
+      "time": "2026-05-23T16:51:21.714540Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T16:52:10.474424Z",
+      "abertura_porta": 221
+    },
+    {
+      "time": "2026-05-23T16:55:50.515006Z",
+      "abertura_porta": 222
+    },
+    {
+      "time": "2026-05-23T16:55:56.338410Z",
+      "abertura_porta": 222
+    },
+    {
+      "time": "2026-05-23T16:57:02.980841Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:00:01.358867Z",
+      "abertura_porta": 222
+    },
+    {
+      "time": "2026-05-23T17:00:39.046345Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:02:18.180919Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:04:33.225882Z",
+      "abertura_porta": 224
+    },
+    {
+      "time": "2026-05-23T17:05:37.707865Z",
+      "abertura_porta": 224
+    },
+    {
+      "time": "2026-05-23T17:08:38.251663Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:09:53.869850Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:11:38.804874Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:11:43.947968Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:12:51.483295Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:13:59.682576Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:18:20.006860Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:19:53.043205Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:25:34.735569Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:27:13.540808Z",
+      "abertura_porta": 223
+    },
+    {
+      "time": "2026-05-23T17:30:04.267641Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:33:26.626782Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:34:41.620921Z",
+      "abertura_porta": 118
+    },
+    {
+      "time": "2026-05-23T17:36:03.578290Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:36:08.633378Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:36:52.641366Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:37:41.230864Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:38:40.493309Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:42:04.724608Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:43:16.156863Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:44:12.273993Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:45:49.496344Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:48:49.240352Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:51:05.701526Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:51:10.847183Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:53:12.539672Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:54:23.381282Z",
+      "abertura_porta": 120
+    },
+    {
+      "time": "2026-05-23T17:55:12.380506Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T17:57:18.771466Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T18:04:36.504068Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T18:05:20.434384Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T18:05:26.276463Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T18:06:21.161988Z",
+      "abertura_porta": 119
+    },
+    {
+      "time": "2026-05-23T18:09:50.235036Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:16:10.635707Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:25:13.577386Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:26:41.952290Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:27:42.446925Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:32:35.224719Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:33:14.836859Z",
+      "abertura_porta": 0
+    },
+    {
+      "time": "2026-05-23T18:35:10.561869Z",
+      "abertura_porta": 0
+    }
+  ]
+}
