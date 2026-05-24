@@ -4,12 +4,12 @@ def detect_door_state(
     standby_threshold=10,
 ):
     """
-    Três patamares observados nos dados reais:
+    Três parâmetros observados nos dados reais:
       - 0             → STANDBY  (sensor desligado / estabelecimento fechado)
       - 118–121       → FECHADA  (voltagem média, sensor ativo, porta fechada)
       - 221–224       → ABERTA   (voltagem alta, porta fisicamente aberta)
 
-    open_threshold=150 fica no meio-termo entre os dois patamares ativos,
+    open_threshold=150 fica no meio-termo entre os dois parametros ativos,
     eliminando risco de falso positivo por oscilação de ±2 V.
     standby_threshold=10 cobre o zero com margem para ruído de hardware.
     """
